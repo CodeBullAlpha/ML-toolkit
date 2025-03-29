@@ -1,24 +1,66 @@
 #include "Matrix.cpp"
 
-class GradientDecent
+
+class GradientDescent
 {
-private:
-    Matrix X;
+
 
 public:
-    GradientDecent(Matrix arr)
+
+    // Given a new sample (without bias) and theta, evaluate predicted value
+    double prediction(vector<double>& sample, vector<double>& theta)
     {
-        X=arr;
-    }
-    //given new sample(without bias) and theta evalute  predicted value
-    double prediction(vector<double>& sample,vector<double>& theta)
-    {
-        //bias term
-        double result=theta[0];
-        for(int c=0;c<sample.size();c++)
+        double result = theta[0]; // Assuming the first element of theta is the bias term
+        for (unsigned int c = 0; c < sample.size(); c++)
         {
-            result+=theta[c+1]*sample[c];
+            result += theta[c + 1] * sample[c]; // Assuming sample has the features
         }
         return result;
+    }
+
+
+    // Hypothesis function: computes predictions = X * theta (theta is a vector)
+    vector<double> hypothesis(Matrix& X, const vector<double> &theta)
+    {
+        int numRows = X.getRows();
+        int numCols = X.getCols();  // Should equal the number of parameters in theta
+        vector<double> predictions(numRows, 0.0);
+
+        for (int r = 0; r < numRows; r++)
+        {
+            for (int c = 0; c < numCols; c++)
+            {
+                predictions[r] += X(r, c) * theta[c]; // Ensure X(r, c) access is correct
+            }
+        }
+        return predictions;
+    }
+
+    // Gradient Descent function to optimize theta
+    vector<double> gradientDescent( Matrix& X,vector<double>& y, double alpha, int iterations) {
+        int numRows = X.getRows();
+        int numCols = X.getCols();  // Number of parameters (features + bias)
+        vector<double> theta(numCols, 0.0);  // Initialize theta to 0
+
+        for (int iter = 0; iter < iterations; iter++) {
+            vector<double> h = hypothesis(X, theta);  // Get predicted values
+            vector<double> gradient(numCols, 0.0);
+
+            // Calculate gradient for each parameter
+            for (int c = 0; c < numCols; c++) {
+                double sumError = 0.0;
+                for (int r = 0; r < numRows; r++) {
+                    sumError += (h[r] - y[r]) * X(r, c);  // Sum of errors * feature value
+                }
+                gradient[c] = (alpha / numRows) * sumError;  // Gradient calculation
+            }
+
+            // Update theta based on gradient
+            for (int c = 0; c < numCols; c++) {
+                theta[c] -= gradient[c];  // Update parameters
+            }
+        }
+
+        return theta;
     }
 };

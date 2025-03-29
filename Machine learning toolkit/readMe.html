@@ -1,0 +1,92 @@
+<h1 id="machine-learning-toolkit">Machine Learning Toolkit</h1>
+<p>A lightweight <strong>C++ Machine Learning Toolkit</strong> with
+built-in support for <strong>matrix operations, linear regression, and
+neural networks</strong>. Designed for speed, flexibility, and easy
+customization.</p>
+<h2 id="features">Features</h2>
+<p>✅ <strong>Matrix Class</strong> – Efficient matrix operations for ML
+computations<br />
+✅ <strong>Linear Regression</strong> – Gradient Descent
+implementation<br />
+✅ <strong>Neural Networks</strong> – Supports forward &amp;
+backpropagation<br />
+✅ <strong>Activation Functions</strong> – Sigmoid, ReLU, Tanh, and
+Softmax<br />
+✅ <strong>Optimized Training</strong> – Momentum-based gradient
+descent<br />
+✅ <strong>Model Saving &amp; Loading</strong> – Store and reuse trained
+models</p>
+<hr />
+<h2 id="installation">Installation</h2>
+<h3 id="prerequisites"><strong>Prerequisites</strong></h3>
+<ul>
+<li>C++17 or later</li>
+<li>GNU GCC Compiler (or any compatible compiler)</li>
+</ul>
+<h3 id="clone-the-repository"><strong>Clone the Repository</strong></h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/yourusername/ML-toolkit.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ML-toolkit</span></code></pre></div>
+<h3 id="compile-the-toolkit"><strong>Compile the Toolkit</strong></h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-o</span> ml_toolkit main.cpp Matrix.cpp NeuralNetwork.cpp <span class="at">-std</span><span class="op">=</span>c++17</span></code></pre></div>
+<hr />
+<h2 id="usage">Usage</h2>
+<h3 id="import-and-initialize"><strong>1️⃣ Import and
+Initialize</strong></h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;Matrix.h&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;NeuralNetwork.h&quot;</span></span></code></pre></div>
+<h3 id="create-and-train-a-model"><strong>2️⃣ Create and Train a
+Model</strong></h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Matrix X<span class="op">(</span><span class="dv">4</span><span class="op">,</span> <span class="dv">2</span><span class="op">);</span>  <span class="co">// Training data (features)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> y <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">};</span>  <span class="co">// Labels</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>NeuralNetwork nn<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span>  <span class="co">// 2-input, 4-hidden, 1-output</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>nn<span class="op">.</span>train<span class="op">(</span>X<span class="op">,</span> y<span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dv">1000</span><span class="op">);</span></span></code></pre></div>
+<h3 id="make-predictions"><strong>3️⃣ Make Predictions</strong></h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> sample <span class="op">=</span> <span class="op">{</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">};</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> prediction <span class="op">=</span> nn<span class="op">.</span>predict<span class="op">(</span>sample<span class="op">);</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cout <span class="op">&lt;&lt;</span> <span class="st">&quot;Predicted value: &quot;</span> <span class="op">&lt;&lt;</span> prediction <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span></code></pre></div>
+<h3 id="save-load-a-model"><strong>4️⃣ Save &amp; Load a
+Model</strong></h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nn<span class="op">.</span>saveModel<span class="op">(</span><span class="st">&quot;model.txt&quot;</span><span class="op">);</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nn<span class="op">.</span>loadModel<span class="op">(</span><span class="st">&quot;model.txt&quot;</span><span class="op">);</span></span></code></pre></div>
+<hr />
+<h2 id="neural-network-class-prototype">Neural Network Class
+Prototype</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NeuralNetwork <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    Matrix weights1<span class="op">,</span> weights2<span class="op">;</span> <span class="co">// Weight matrices for layers</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> biases1<span class="op">,</span> biases2<span class="op">;</span> <span class="co">// Bias terms</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> learningRate<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    NeuralNetwork<span class="op">(</span><span class="dt">int</span> inputSize<span class="op">,</span> <span class="dt">int</span> hiddenSize<span class="op">,</span> <span class="dt">int</span> outputSize<span class="op">);</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> forward<span class="op">(</span>Matrix <span class="op">&amp;</span>X<span class="op">);</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> backward<span class="op">(</span>Matrix <span class="op">&amp;</span>X<span class="op">,</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> train<span class="op">(</span>Matrix <span class="op">&amp;</span>X<span class="op">,</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>y<span class="op">,</span> <span class="dt">double</span> alpha<span class="op">,</span> <span class="dt">int</span> epochs<span class="op">);</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> predict<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>sample<span class="op">);</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> saveModel<span class="op">(</span><span class="at">const</span> string <span class="op">&amp;</span>filename<span class="op">);</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> loadModel<span class="op">(</span><span class="at">const</span> string <span class="op">&amp;</span>filename<span class="op">);</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>In LaTeX notation, a forward pass in a neural network can be
+represented as:</p>
+<p>[ Z^{[l]} = W^{[l]} A^{[l-1]} + b^{[l]} ]</p>
+<p>where: - ( Z^{[l]} ) is the weighted input to layer ( l ) - ( W^{[l]}
+) is the weight matrix for layer ( l ) - ( A^{[l-1]} ) is the activation
+from the previous layer - ( b^{[l]} ) is the bias vector for layer ( l
+)</p>
+<p>The activation function, such as ReLU or Sigmoid, is then
+applied:</p>
+<p>[ A^{[l]} = g(Z^{[l]}) ]</p>
+<hr />
+<h2 id="contributing">Contributing</h2>
+<p>Contributions are welcome! Feel free to fork this repository, submit
+issues, or open a pull request.</p>
+<hr />
+<h2 id="license">License</h2>
+<p>made by Wesley</p>

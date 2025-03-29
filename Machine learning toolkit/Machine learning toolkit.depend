@@ -13,3 +13,31 @@
 	<vector>
 	<stdexcept>
 
+1743275266 source:c:\users\wesley_the_codedemon\desktop\self learnt code\ml-toolkit\machine learning toolkit\main.cpp
+	<iostream>
+	"Matrix.cpp"
+	<vector>
+	"Gradient decent.cpp"
+
+1743276004 c:\users\wesley_the_codedemon\desktop\self learnt code\ml-toolkit\machine learning toolkit\matrix.cpp
+	<iostream>
+	<vector>
+	<stdexcept>
+
+1743276004 source:c:\users\wesley_the_codedemon\desktop\self learnt code\ml-toolkit\machine learning toolkit\matrix.cpp
+	<iostream>
+	<vector>
+	<stdexcept>
+
+1743281606 source:c:\users\wesley_the_codedemon\desktop\self learnt code\ml-toolkit\machine learning toolkit\neuralnetwork.cpp
+	<iostream>
+	<vector>
+	<stdexcept>
+	"Matrix.cpp"
+
+1743275269 source:c:\users\wesley_the_codedemon\desktop\self learnt code\ml-toolkit\machine learning toolkit\gradient decent.cpp
+	"Matrix.cpp"
+
+1743275269 c:\users\wesley_the_codedemon\desktop\self learnt code\ml-toolkit\machine learning toolkit\gradient decent.cpp
+	"Matrix.cpp"
+

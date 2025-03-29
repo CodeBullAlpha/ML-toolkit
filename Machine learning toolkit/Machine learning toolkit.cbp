@@ -34,6 +34,7 @@
 		</Compiler>
 		<Unit filename="Gradient decent.cpp" />
 		<Unit filename="Matrix.cpp" />
+		<Unit filename="NeuralNetwork.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

@@ -2,9 +2,10 @@
 #include <vector>
 #include <stdexcept>
 
+#ifndef MATRIX_H
+#define MATRIX_H
 using namespace std;
-
-class Matrix
+ class Matrix
 {
 private:
     //declaration of variables for matrix
@@ -13,6 +14,19 @@ private:
     int cols;
 
 public:
+
+    Matrix()
+    {
+
+        rows=10;
+        cols=10;
+        data.resize(rows);
+        for(int r=0;r<rows;r++)
+        {
+                data[r].resize(cols,0.0);
+        }
+    }
+
     Matrix(int rowss,int colss)
     {
         rows=rowss;
@@ -49,18 +63,7 @@ public:
         return data[row][col];
     }
 
-        //operator overloading
-    const double& operator()(int row,int col)
-    const{
-        //check if coordinates are within bounds
-        if(row<0 || row>=rows || col<0 || col>=cols)
-        {
-            throw std::out_of_range("indexes out of bounds");
-        }
-        return data[row][col];
-    }
-
-    const Matrix operator*(const Matrix& otherMatrix)
+    const Matrix operator*( Matrix& otherMatrix)
     const{
         if(otherMatrix.rows!=cols)
         {
@@ -83,7 +86,7 @@ public:
         return result;
     }
 
-    const Matrix operator+(const Matrix& other)
+    const Matrix operator+(Matrix& other)
     {
 
         if(other.rows!=rows || other.cols!=cols)
@@ -150,3 +153,4 @@ public:
         swap(rows, cols); // Swap rows and columns
     }
 };
+#endif // MATRIX_H
