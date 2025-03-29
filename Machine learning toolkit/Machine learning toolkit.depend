@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1740000492 source:c:\users\wesley_the_codedemon\desktop\self learnt code\machine learning toolkit\matrix.cpp
+	<iostream>
+	<vector>
+	<stdexcept>
+
+1740000703 source:c:\users\wesley_the_codedemon\desktop\self learnt code\machine learning toolkit\main.cpp
+	<iostream>
+	"Matrix.cpp"
+
+1740000492 c:\users\wesley_the_codedemon\desktop\self learnt code\machine learning toolkit\matrix.cpp
+	<iostream>
+	<vector>
+	<stdexcept>
+
