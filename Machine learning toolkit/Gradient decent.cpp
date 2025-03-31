@@ -1,6 +1,7 @@
+#ifndef GRADIENTDESCENT_H
+#define GRADIENTDESCENT_H
+
 #include "Matrix.cpp"
-
-
 class GradientDescent
 {
 
@@ -37,30 +38,50 @@ public:
     }
 
     // Gradient Descent function to optimize theta
-    vector<double> gradientDescent( Matrix& X,vector<double>& y, double alpha, int iterations) {
+    vector<double> gradientDescent( Matrix& X,vector<double>& y, double alpha, int iterations)
+    {
         int numRows = X.getRows();
         int numCols = X.getCols();  // Number of parameters (features + bias)
         vector<double> theta(numCols, 0.0);  // Initialize theta to 0
 
-        for (int iter = 0; iter < iterations; iter++) {
+        for (int iter = 0; iter < iterations; iter++)
+        {
             vector<double> h = hypothesis(X, theta);  // Get predicted values
             vector<double> gradient(numCols, 0.0);
 
             // Calculate gradient for each parameter
-            for (int c = 0; c < numCols; c++) {
+            for (int c = 0; c < numCols; c++)
+            {
                 double sumError = 0.0;
-                for (int r = 0; r < numRows; r++) {
+                for (int r = 0; r < numRows; r++)
+                {
                     sumError += (h[r] - y[r]) * X(r, c);  // Sum of errors * feature value
                 }
                 gradient[c] = (alpha / numRows) * sumError;  // Gradient calculation
             }
 
             // Update theta based on gradient
-            for (int c = 0; c < numCols; c++) {
+            for (int c = 0; c < numCols; c++)
+            {
                 theta[c] -= gradient[c];  // Update parameters
             }
         }
 
         return theta;
     }
+    // Update function to apply gradient descent to weights and biases
+    void update(Matrix& param,Matrix& gradient, double learning_rate)
+    {
+        // Update the parameter (weight or bias) by subtracting the learning rate * gradient
+        for (int r = 0; r < param.getRows(); ++r)
+        {
+            for (int c = 0; c < param.getCols(); ++c)
+            {
+                double result=param(r,c) - learning_rate * gradient(r,c);
+                param.setElements(r, c,result);
+            }
+        }
+    }
 };
+
+#endif // GRADIENTDESCENT_H

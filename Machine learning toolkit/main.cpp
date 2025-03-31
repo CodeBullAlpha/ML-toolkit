@@ -2,6 +2,7 @@
 #include "Matrix.cpp"
 #include <vector>
 #include "Gradient decent.cpp"
+#include "NeuralNetwork.cpp"
 
 using namespace std;
 
@@ -36,7 +37,8 @@ int main() {
 
     // Output the optimized theta values
     cout << "Optimized Theta:\n";
-    for (double t : optimizedTheta) {
+    for (double t : optimizedTheta)
+    {
         cout << t << " ";
     }
     cout << endl;
@@ -45,6 +47,47 @@ int main() {
     vector<double> sample = {1, 2}; // Example input (without bias term)
     double prediction = gd.prediction(sample, optimizedTheta);
     cout << "Prediction for sample {1, 2}: " << prediction << endl;
+    ///////////////////////////////////////////////////////////////////////////
+    //NEURAL NETWORK TRAINING
+        // Sample data for training (let's assume it's a simple binary classification task)
+    // Input features (e.g., two features per sample)
+    vector<vector<double>> training_data =
+    {
+        {0.0, 0.0},  // Sample 1: Input (0, 0)
+        {0.0, 1.0},  // Sample 2: Input (0, 1)
+        {1.0, 0.0},  // Sample 3: Input (1, 0)
+        {1.0, 1.0}   // Sample 4: Input (1, 1)
+    };
+
+    // Target labels for the samples
+    vector<vector<int>> target_data =
+    {
+        {0},  // Sample 1: Label 0
+        {1},  // Sample 2: Label 1
+        {1},  // Sample 3: Label 1
+        {0}   // Sample 4: Label 0
+    };
+
+    // Create a Neural Network with 2 input neurons, 3 hidden neurons, and 1 output neuron
+    NeuralNetwork nn(2, 3, 1, 0.1);  // 2 inputs, 3 hidden neurons, 1 output, learning rate = 0.1
+
+    // Train the Neural Network with sample data
+    int epochs = 1000;  // Number of epochs (iterations)
+    nn.train(training_data, target_data, epochs);
+
+    // Test the network on the training data after training
+    cout << "\nTesting after training:" << endl;
+    for (size_t i = 0; i < training_data.size(); ++i)
+    {
+        pair<Matrix, std::vector<double>> result = nn.forwardProp(training_data[i]);
+        vector<double> output = result.second; // Access the second element (the vector)
+        cout << "Input: (" << training_data[i][0] << ", " << training_data[i][1] << ") -> Prediction: ";
+        for (double val : output) {
+            cout << val << " ";  // Print the prediction (after applying softmax)
+        }
+        cout << endl;
+    }
+
 
     return 0;
 }
