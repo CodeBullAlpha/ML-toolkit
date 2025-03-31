@@ -39,15 +39,15 @@ public:
     }
 
     //copy contructor
-    Matrix(const Matrix& otherMatrix): rows(otherMatrix.rows),cols(otherMatrix.cols)
+    Matrix(const Matrix& otherMatrix) : rows(otherMatrix.rows), cols(otherMatrix.cols)
     {
         data.resize(rows);
-        for(int r=0;r<rows;r++)
+        for (int r = 0; r < rows; r++)
         {
-            data.resize(cols);
-            for(int c=0;c<cols;c++)
+            data[r].resize(cols);  // Correctly resize the inner vector
+            for (int c = 0; c < cols; c++)
             {
-                data[r][c]=otherMatrix.data[r][c];
+                data[r][c] = otherMatrix.data[r][c];
             }
         }
     }
@@ -55,7 +55,7 @@ public:
 
 
     //operator overloading
-    const double& operator()(int row,int col)
+    const double& operator()(int row,int col) const
     {
         //check if coordinates are within bounds
         if(row<0 || row>=rows || col<0 || col>=cols)
@@ -88,7 +88,7 @@ public:
         return result;
     }
 
-    const Matrix operator+(Matrix& other)
+    const Matrix operator+(Matrix& other) const
     {
 
         if(other.rows!=rows || other.cols!=cols)
@@ -96,7 +96,7 @@ public:
             throw invalid_argument("Matrices have different dimensions");
         }
 
-            Matrix result(5,5);
+            Matrix result(rows,cols);
             for(int r=0;r<rows;r++)
             {
                 for(int c=0;c<cols;c++)
@@ -154,5 +154,19 @@ public:
         data = TransposedData;
         swap(rows, cols); // Swap rows and columns
     }
+
+    Matrix getTransposed()
+     {
+        Matrix transposed(cols, rows); // Swap rows and columns
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                transposed.setElements(c, r, data[r][c]);
+            }
+        }
+        return transposed;
+    }
+
 };
 #endif // MATRIX_H

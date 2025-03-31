@@ -1,6 +1,7 @@
 #ifndef GRADIENTDESCENT_H
 #define GRADIENTDESCENT_H
 
+#include <cmath>
 #include "Matrix.cpp"
 class GradientDescent
 {
@@ -37,12 +38,40 @@ public:
         return predictions;
     }
 
-    // Gradient Descent function to optimize theta
-    vector<double> gradientDescent( Matrix& X,vector<double>& y, double alpha, int iterations)
+    // Normalize training data (Feature Scaling)
+    void normalizeData(vector<vector<double>>& data)
+    {
+        int numSamples = data.size();
+        int numFeatures = data[0].size();
+
+        for (int c = 0; c < numFeatures; ++c)
+        {  // Normalize each feature column
+            double sum = 0.0, sumSq = 0.0;
+
+            // Compute mean and standard deviation
+            for (int r = 0; r < numSamples; ++r)
+            {
+                sum += data[r][c];
+                sumSq += data[r][c] * data[r][c];
+            }
+
+            double mean = sum / numSamples;
+            double variance = (sumSq / numSamples) - (mean * mean);
+            double stdDev = sqrt(variance + 1e-8);  // Prevent division by zero
+
+            // Normalize column values
+            for (int r = 0; r < numSamples; ++r) {
+                data[r][c] = (data[r][c] - mean) / stdDev;
+            }
+        }
+    }
+
+
+
+    void gradientDescent(Matrix& X, vector<double>& y, vector<double>& theta, double alpha, int iterations)
     {
         int numRows = X.getRows();
         int numCols = X.getCols();  // Number of parameters (features + bias)
-        vector<double> theta(numCols, 0.0);  // Initialize theta to 0
 
         for (int iter = 0; iter < iterations; iter++)
         {
@@ -66,22 +95,26 @@ public:
                 theta[c] -= gradient[c];  // Update parameters
             }
         }
-
-        return theta;
     }
-    // Update function to apply gradient descent to weights and biases
-    void update(Matrix& param,Matrix& gradient, double learning_rate)
+
+    void update(Matrix& param, Matrix& gradient, double learning_rate)
     {
-        // Update the parameter (weight or bias) by subtracting the learning rate * gradient
         for (int r = 0; r < param.getRows(); ++r)
         {
             for (int c = 0; c < param.getCols(); ++c)
             {
-                double result=param(r,c) - learning_rate * gradient(r,c);
-                param.setElements(r, c,result);
+                double grad_value = gradient(r, c);
+                if (std::isnan(grad_value) || std::isinf(grad_value))
+                {
+                    grad_value = max(std::min(grad_value, 1.0), -1.0); // Clip values
+                }
+
+                double result = param(r, c) - learning_rate * grad_value;
+                param.setElements(r, c, result);
             }
         }
     }
+
 };
 
 #endif // GRADIENTDESCENT_H
