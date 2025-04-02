@@ -22,13 +22,12 @@ private:
     //activation functions
     double Sigmoid(double x)
     {
-        return 1.0 / (1.0 + exp(-x));  // Fixed incorrect parentheses
+        return 1.0 / (1.0 + exp(-x));
     }
 
     double SigmoidDeri(double x)  // Derivative of Sigmoid
     {
-        double sig = Sigmoid(x);
-        return sig * (1 - sig);
+        return x * (1 - x);
     }
 
     double LeakyReLU(double x)
@@ -67,22 +66,20 @@ private:
         return exp_values;
     }
 
-    double CrossEntropyLoss(const vector<double>& predicted, const vector<int>& actual)
+    double CrossEntropyLoss(const vector<double>& predicted, const vector<double>& actual)
     {
         double loss = 0.0;
-        int count = 0;  // Number of valid terms in the sum
+        size_t n = predicted.size();  // Total samples
 
-        for (size_t i = 0; i < predicted.size(); ++i)
+        for (size_t i = 0; i < n; ++i)
         {
-            if (actual[i] == 1)
-            {
-                loss -= log(max(predicted[i], 1e-8));  // Use 1e-8 for numerical stability
-                count++;
-            }
+            loss -= actual[i] * log(max(predicted[i], 1e-8))  // Handles y = 1
+                  + (1 - actual[i]) * log(max(1 - predicted[i], 1e-8));  // Handles y = 0
         }
 
-        return (count > 0) ? loss / count : 0.0;
+        return loss / n;  // Normalize over all samples
     }
+
 
 
 public:
@@ -100,7 +97,7 @@ public:
             {
                 for (int c= 0; c< weight1.getCols(); ++c)
                 {
-                     weight1.setElements(r, c, ((double)rand() / RAND_MAX - 0.5) * sqrt(2.0 / input_size));  // Small random value between 0 and 1
+                     weight1.setElements(r, c, ((double)rand() / RAND_MAX - 0.5)*0.1);  // Small random value between 0 and 1
                 }
             }
 
@@ -141,10 +138,10 @@ public:
             Matrix hidden = weight1 * input_matrix;  // (hidden_size × 1)
             hidden = hidden + bias1;                 // (hidden_size × 1)
 
-            // Apply Leaky ReLU activation to hidden layer
+            // Apply Sigmoid activation to hidden layer
             for (int i = 0; i < hidden.getRows(); ++i)
             {
-                hidden.setElements(i, 0, LeakyReLU(hidden(i, 0)));
+                hidden.setElements(i, 0, Sigmoid(hidden(i, 0)));
             }
 
             // Forward pass through second layer (hidden → output)
@@ -156,13 +153,13 @@ public:
             vector<double> output_vector(output.getRows());
             for (int i = 0; i < output.getRows(); ++i)
             {
-                output_vector[i] = output(i, 0);
+                output_vector[i] = Sigmoid(output(i, 0));
             }
 
-            return {hidden, softmax(output_vector)};
+            return {hidden,output_vector};
         }
 
-        void train(const std::vector<std::vector<double>>& training_data, const std::vector<std::vector<int>>& target_data, int epochs)
+        void train(const vector<vector<double>>& training_data, const vector<vector<double>>& target_data, int epochs)
         {
             // Loop through epochs
             for (int epoch = 0; epoch < epochs; ++epoch)
@@ -207,30 +204,13 @@ public:
                     Matrix transposed_weight2=weight2.getTransposed();
                     Matrix hidden_errors = transposed_weight2 * output_error_matrix;
 
-                    // Apply Leaky ReLU derivative to hidden errors
+                    // Apply Sigmoid derivative to hidden errors
                     for (int r = 0; r < hidden_errors.getRows(); ++r)
                     {
                         double hidden_val = hidden(r, 0);
                         double hidden_error_val = hidden_errors(r, 0);
-                        double leaky_deri_val = LeakyDeri(hidden_val);
-
-                        /*if (isnan(hidden_error_val)) {
-                            cout << "NaN found in hidden_errors at index " << r << "!" << endl;
-                        }*/
-                        /*if (isnan(leaky_deri_val)) {
-                            cout << "NaN found in LeakyDeri(hidden(" << r << ", 0))!" << endl;
-                        }*/
-
-                        /*cout << "hidden_error: " << hidden_error_val
-                             << " | hidden: " << hidden_val
-                             << " | LeakyDeri: " << leaky_deri_val << endl;*/
-
-                        double grad = hidden_error_val * leaky_deri_val;
-
-                        /*if (isnan(grad)) {
-                            cout << "NaN found in grad calculation at index " << r << "!" << endl;
-                        }*/
-
+                        double SigmoidDeri_val = SigmoidDeri(hidden_val);
+                        double grad = hidden_error_val * SigmoidDeri_val;
                         hidden_errors.setElements(r, 0, grad);
                     }
 

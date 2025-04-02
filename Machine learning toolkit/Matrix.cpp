@@ -44,7 +44,7 @@ public:
         data.resize(rows);
         for (int r = 0; r < rows; r++)
         {
-            data[r].resize(cols);  // Correctly resize the inner vector
+            data[r].resize(cols);
             for (int c = 0; c < cols; c++)
             {
                 data[r][c] = otherMatrix.data[r][c];

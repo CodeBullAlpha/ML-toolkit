@@ -32,7 +32,7 @@ public:
         {
             for (int c = 0; c < numCols; c++)
             {
-                predictions[r] += X(r, c) * theta[c]; // Ensure X(r, c) access is correct
+                predictions[r] += X(r, c) * theta[c];
             }
         }
         return predictions;
@@ -99,16 +99,17 @@ public:
 
     void update(Matrix& param, Matrix& gradient, double learning_rate)
     {
+
         for (int r = 0; r < param.getRows(); ++r)
         {
             for (int c = 0; c < param.getCols(); ++c)
             {
                 double grad_value = gradient(r, c);
-                if (std::isnan(grad_value) || std::isinf(grad_value))
+                double clip_threshold = 1.0; // or another value determined by experimentation
+                if (fabs(grad_value) > clip_threshold)
                 {
-                    grad_value = max(std::min(grad_value, 1.0), -1.0); // Clip values
+                    grad_value = clip_threshold * ((grad_value > 0) ? 1 : -1);
                 }
-
                 double result = param(r, c) - learning_rate * grad_value;
                 param.setElements(r, c, result);
             }
